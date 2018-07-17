@@ -4,26 +4,43 @@
 import HomeController from './controllers/HomeController';
 
 //====================SERVICES==============================//
-
+import LocaleService from './services/LocaleService';
 
 //====================FILTERS==============================//
 
 //====================DIRECTIVES==============================//
+import LangsListDirective from './directives/LangsListDirective';
+
+angular.module('VtaminkaApplication.controllers' , []);
+angular.module('VtaminkaApplication.services' , []);
+angular.module('VtaminkaApplication.filters' , []);
+angular.module('VtaminkaApplication.directives' , []);
+angular.module('VtaminkaApplication.constants' , []);
+
+//====================CONSTANTS================================//
+angular.module('VtaminkaApplication.constants')
+       .constant('HOST' , 'http://localhost:63342/Vtaminka/public/');
+
+angular.module('VtaminkaApplication.constants')
+    .constant('GET_LANGS' , 'i18n/langs.json');
+
+//====================SERVICES DECLARATIONS===================//
+angular.module('VtaminkaApplication.services')
+    .service('LocaleService' , [ '$http', 'HOST' , 'GET_LANGS' , LocaleService ]);
+
+//====================DIRECTIVES DECLARATIONS===================//
+angular.module('VtaminkaApplication.directives')
+    .directive('langsListDirective' , [ LangsListDirective ]);
 
 
-angular.module('SkeletonApplication.controllers' , []);
-angular.module('SkeletonApplication.services' , []);
-angular.module('SkeletonApplication.filters' , []);
-angular.module('SkeletonApplication.directives' , []);
-
-
-let app = angular.module('SkeletonApplication',[
+let app = angular.module('VtaminkaApplication',[
     'angular-loading-bar',
     'LocalStorageModule',
-    'SkeletonApplication.controllers',
-    'SkeletonApplication.filters',
-    'SkeletonApplication.services',
-    'SkeletonApplication.directives',
+    'VtaminkaApplication.controllers',
+    'VtaminkaApplication.filters',
+    'VtaminkaApplication.services',
+    'VtaminkaApplication.directives',
+    'VtaminkaApplication.constants',
     'ngRoute',
     'ui.router',
 ]);
@@ -48,6 +65,9 @@ app.config( [
         'views':{
             "header":{
                 "templateUrl": "templates/header.html",
+                "controller": [ '$scope' , 'langs' , function ( $scope , langs ){
+                    $scope.langs = langs;
+                } ]
             },
             "content": {
                 'templateUrl': "templates/home.html",
@@ -57,6 +77,11 @@ app.config( [
                 'templateUrl': "templates/footer.html",
             }
         },
+        'resolve': {
+            'langs': [ 'LocaleService' , function ( LocaleService ){
+                return LocaleService.getLangs();
+            } ]
+        }
     });
 
 } ] );
