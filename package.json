@@ -19,13 +19,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ovsyanikov94/angular-skeleton.git"
+    "url": "git+https://github.com/ovsyanikov94/Vtaminka.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ovsyanikov94/angular-skeleton/issues"
+    "url": "https://github.com/ovsyanikov94/Vtaminka/issues"
   },
-  "homepage": "https://github.com/ovsyanikov94/angular-skeleton#readme"
+  "homepage": "https://github.com/ovsyanikov94/Vtaminka.git#readme"
 }
