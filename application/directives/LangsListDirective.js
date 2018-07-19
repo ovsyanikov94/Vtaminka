@@ -12,17 +12,18 @@ export default function LangsListDirective(){
         },
         controller: [ '$scope' , function ( $scope ){
 
+                $scope.CurrentLanguage = $scope.langs[0];
+                $scope.isCreated = false;
+
         } ],
-        link: function (){
 
-            $('.dropdown-toggle').dropdown();
+        link: function ( scope , element ){
 
-            [].forEach.call(document.querySelectorAll( 'select.cs-select' ) , function(el) {
-                new SelectFx(el);
-            }  )
+            let el = element.context.querySelector('select.cs-select');
+            new SelectFx(el);
 
-        }
+        }//link
 
-    }//
+    }//LangsListDirective {}
 
-}//
+}//LangsListDirective ()
