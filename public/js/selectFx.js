@@ -95,6 +95,7 @@
 	 * creates the structure for the select element
 	 */
 	SelectFx.prototype._createSelectEl = function() {
+
 		var self = this, options = '', createOptionHTML = function(el) {
 			var optclass = '', classes = '', link = '';
 
