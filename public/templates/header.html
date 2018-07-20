@@ -5,7 +5,15 @@
         </div>
 
         <div class="delimetersmall delimeter visible-sm-inline-block visible-xs-inline-block"></div>
-        <div class="lang" langs-list-directive langs="langs"></div>
+        <div class="lang">
+            <select
+                    id="langs"
+                    class="cs-select cs-skin-rotate"
+                    ng-model="currentLang"
+                    langs="langs"
+                    langs-option-directive
+            ></select>
+        </div>
 
         <div class="delimeter"></div>
         <div class="cart">
@@ -16,11 +24,11 @@
         </div>
         <div class="menu hidden-sm hidden-xs">
             <nav class="topMenu cl-effect-2">
-                <a href="index.html" >Главная</a>
-                <a href="products.html" >Товары</a>
-                <a href="blog.html" >Блог</a>
-                <a href="about_us.html" >О компании</a>
-                <a href="contacts.html" >Контакты</a>
+                <a href="index.html" translate >LAYOUT_MAIN_LINK</a>
+                <a href="products.html" translate >LAYOUT_PRODUCTS_LINK</a>
+                <a href="blog.html" translate>LAYOUT_BLOG_LINK</a>
+                <a href="about_us.html" translate >LAYOUT_ABOUT_LINK</a>
+                <a href="contacts.html" translate >LAYOUT_CONTACTS_LINK</a>
             </nav>
         </div>
 

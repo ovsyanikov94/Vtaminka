@@ -10,7 +10,7 @@ import ProductService from './services/ProductService';
 //====================FILTERS==============================//
 
 //====================DIRECTIVES==============================//
-import LangsListDirective from './directives/LangsListDirective';
+import LangsOptionDirective from './directives/LangsOptionDirective';
 import ProductDirective from './directives/ProductDirective';
 
 angular.module('VtaminkaApplication.controllers' , []);
@@ -21,7 +21,7 @@ angular.module('VtaminkaApplication.constants' , []);
 
 //====================CONTROLLERS DECLARATIONS================================//
 angular.module('VtaminkaApplication.controllers')
-    .controller( 'MainController' , [ '$scope' , 'LocaleService' , MainController ]);
+    .controller( 'MainController' , [ '$scope' , 'LocaleService' , '$translate', MainController ]);
 
 //====================CONSTANTS================================//
 angular.module('VtaminkaApplication.constants')
@@ -34,16 +34,19 @@ angular.module('VtaminkaApplication.constants')
 angular.module('VtaminkaApplication.constants')
     .constant('GET_PRODUCTS' , 'products/products-list.json');
 
+angular.module('VtaminkaApplication.constants')
+    .constant('GET_TRANSLATIONS' , 'i18n/{{LANG}}.json');
+
 //====================SERVICES DECLARATIONS===================//
 angular.module('VtaminkaApplication.services')
-    .service('LocaleService' , [ '$http', 'HOST' , 'GET_LANGS' , LocaleService ]);
+    .service('LocaleService' , [ '$http', 'HOST' , 'GET_LANGS' , 'GET_TRANSLATIONS' , LocaleService ]);
 
 angular.module('VtaminkaApplication.services')
     .service('ProductService' , [ '$http', 'HOST' , 'GET_PRODUCTS' , ProductService ]);
 
 //====================DIRECTIVES DECLARATIONS===================//
 angular.module('VtaminkaApplication.directives')
-    .directive('langsListDirective' , [ LangsListDirective ]);
+    .directive('langsOptionDirective' , [ LangsOptionDirective ]);
 
 angular.module('VtaminkaApplication.directives')
     .directive('productDirective' , [ ProductDirective ]);
@@ -59,6 +62,7 @@ let app = angular.module('VtaminkaApplication',[
     'VtaminkaApplication.constants',
     'ngRoute',
     'ui.router',
+    'pascalprecht.translate',
 ]);
 
 app.config( [
@@ -66,9 +70,17 @@ app.config( [
     '$urlRouterProvider',
     'localStorageServiceProvider' ,
     'cfpLoadingBarProvider',
-    ($stateProvider , $urlRouterProvider , localStorageServiceProvider , cfpLoadingBarProvider)=>{
+    '$translateProvider',
+    ($stateProvider , $urlRouterProvider , localStorageServiceProvider , cfpLoadingBarProvider , $translateProvider)=>{
 
     $urlRouterProvider.otherwise('/home');
+
+    $translateProvider.useStaticFilesLoader({
+        'prefix': 'i18n/',
+        'suffix': '.json'
+    });
+
+    $translateProvider.preferredLanguage('RU');
 
     cfpLoadingBarProvider.includeSpinner = true;
     cfpLoadingBarProvider.includeBar = true;
@@ -81,7 +93,7 @@ app.config( [
         'views':{
             "header":{
                 "templateUrl": "templates/header.html",
-                "controller": [ "$scope" , "langs" , function ($scope , langs){
+                controller: [ '$scope' , 'langs' , function ($scope , langs ){
                     $scope.langs = langs;
                 } ]
             },
@@ -104,7 +116,7 @@ app.config( [
             } ],
             'langs': [ 'LocaleService' , function ( LocaleService ){
                 return LocaleService.getLangs();
-            } ]
+            }  ]
 
         }
     });
