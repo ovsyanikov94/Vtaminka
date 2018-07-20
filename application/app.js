@@ -6,6 +6,7 @@ import MainController from './controllers/MainController';
 //====================SERVICES==============================//
 import LocaleService from './services/LocaleService';
 import ProductService from './services/ProductService';
+import CartService from './services/CartService';
 
 //====================FILTERS==============================//
 
@@ -44,6 +45,9 @@ angular.module('VtaminkaApplication.services')
 angular.module('VtaminkaApplication.services')
     .service('ProductService' , [ '$http', 'HOST' , 'GET_PRODUCTS' , ProductService ]);
 
+angular.module('VtaminkaApplication.services')
+    .service('CartService' , [ CartService ]);
+
 //====================DIRECTIVES DECLARATIONS===================//
 angular.module('VtaminkaApplication.directives')
     .directive('langsOptionDirective' , [ LangsOptionDirective ]);
@@ -68,10 +72,13 @@ let app = angular.module('VtaminkaApplication',[
 app.config( [
     '$stateProvider',
     '$urlRouterProvider',
+    '$locationProvider',
     'localStorageServiceProvider' ,
     'cfpLoadingBarProvider',
     '$translateProvider',
-    ($stateProvider , $urlRouterProvider , localStorageServiceProvider , cfpLoadingBarProvider , $translateProvider)=>{
+    ($stateProvider , $urlRouterProvider , $locationProvider , localStorageServiceProvider , cfpLoadingBarProvider , $translateProvider)=>{
+
+    $locationProvider.html5Mode(true).hashPrefix('!')
 
     $urlRouterProvider.otherwise('/home');
 
@@ -93,15 +100,17 @@ app.config( [
         'views':{
             "header":{
                 "templateUrl": "templates/header.html",
-                controller: [ '$scope' , 'langs' , function ($scope , langs ){
+                controller: [ '$scope' , 'CartService' , 'langs' , function ($scope, CartService , langs ){
                     $scope.langs = langs;
+                    $scope.cart = CartService.getCart();
                 } ]
             },
             "content": {
                 'templateUrl': "templates/home/home.html",
-                controller: [ '$scope' , 'products' , function ($scope , products){
+                controller: [ '$scope' ,  'CartService' , 'products' , function ($scope , CartService , products){
 
                     $scope.products = products;
+                    $scope.cart = CartService.getCart();
 
                 } ]
             },
